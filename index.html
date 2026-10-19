@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>포켓몬 카드 게임 30주년 기념 확장팩 | 30th CELEBRATION (M6a)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Michroma&family=Noto+Sans+KR:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://cdn.pullrates.com" crossorigin />
+    <link rel="preconnect" href="https://www.pokemonstore.co.kr" crossorigin />
+    <link rel="stylesheet" href="styles.css?v=37" />
+    <link rel="stylesheet" href="src/styles/holo.css?v=37" />
+  </head>
+  <body>
+    <!-- ======================================================================
+         OFFICIAL 30th CELEBRATION HERO KEY VISUAL & TOP PILL BAR
+         ====================================================================== -->
+    <header class="app-header">
+      <!-- Top Bar: Official 30th Logo + Dark Translucent Pill Nav + Live KPI Strip -->
+      <div class="official-top-bar">
+        <div class="header-brand">
+          <img
+            src="https://www.pokemonstore.co.kr/assets/pokemon-30-th/images/logo_440ef87f.png"
+            alt="Pokémon 30th Celebration"
+            class="brand-logo"
+            onerror="this.src='https://cdn.pullrates.com/ui/30th_logo.webp'"
+          />
+          <div class="brand-titles">
+            <div class="brand-badge-row">
+              <span class="set-code-pill">M6a / ME55</span>
+              <span class="all-foil-pill">30th CELEBRATION · ALL-FOIL BOOSTER (6 CARDS / PACK)</span>
+            </div>
+            <h1>포켓몬 카드 게임 30주년 기념 확장팩 시뮬레이터</h1>
+          </div>
+        </div>
+
+        <!-- Live Session KPI Strip & Dark Translucent Pill Controls -->
+        <div class="header-kpis">
+          <div class="kpi-chip">
+            <span class="kpi-label">OPENED PACKS</span>
+            <strong class="kpi-value" id="kpi-packs">0박스 (0팩)</strong>
+          </div>
+          <div class="kpi-chip">
+            <span class="kpi-label">CARD LIST</span>
+            <strong class="kpi-value kpi-gold" id="kpi-collection">0 / 199 (0.0%)</strong>
+          </div>
+          <div class="kpi-chip">
+            <span class="kpi-label">TOTAL SPENT</span>
+            <strong class="kpi-value" id="kpi-spent">₩0</strong>
+          </div>
+          <div class="kpi-chip">
+            <span class="kpi-label">EST. VALUE</span>
+            <strong class="kpi-value kpi-emerald" id="kpi-value">₩0 (0%)</strong>
+          </div>
+          <button type="button" id="btn-header-reset" class="icon-btn btn-reset-kpi" title="개봉 수량, 도감 수집률, 누적 금액 및 가치 초기화">
+            🔄 RESET
+          </button>
+          <button type="button" id="btn-sound-toggle" class="icon-btn" title="효과음 켜기/끄기">
+            🔊 SOUND ON
+          </button>
+        </div>
+      </div>
+
+      <!-- Official Split Key Visual Banner (Pikachu Daylight Gold vs Mew/Mewtwo Cyber RGB) -->
+      <div class="official-kv-banner">
+        <div class="kv-bg-art" aria-hidden="true">
+          <img
+            src="https://www.pokemonstore.co.kr/assets/pokemon-30-th/images/m6a_kv_1e26c802.webp"
+            alt=""
+            class="kv-main-img"
+            onerror="this.style.display='none'"
+          />
+          <div class="kv-bokeh-overlay"></div>
+        </div>
+
+        <div class="kv-center-content">
+          <div class="kv-story-banner" id="kv-story-banner">
+            <span class="kv-story-kicker">POKÉMON 30th CELEBRATION SPECIAL STORY</span>
+            <h2 class="kv-story-headline" data-text="포켓몬과 함께 만들어 갈 지호와 시온이의 이야기">
+              포켓몬과 함께 만들어 갈 지호와 시온이의 이야기
+            </h2>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ======================================================================
+         METALLIC SILVER-PLATINUM SHEET CONTAINER (Official m6a / 30th Gallery Layout)
+         ====================================================================== -->
+    <div class="silver-sheet-container">
+      <!-- Official Lavender/Purple Pokéball Capsule Navigation (AnchorNav Style) -->
+      <nav class="main-tabs" aria-label="주요 메뉴">
+        <div class="anchor-nav-pill">
+          <button type="button" class="main-tab-btn active" data-tab="simulator">
+            <span class="pokeball-nav-icon" aria-hidden="true"></span>
+            <span>BOOSTER SIMULATOR · 카드깡</span>
+          </button>
+          <button type="button" class="main-tab-btn" data-tab="gallery">
+            <span class="pokeball-nav-icon" aria-hidden="true"></span>
+            <span>CARD GALLERY · 도감 <em class="tab-counter" id="tab-gallery-count">0/199</em></span>
+          </button>
+          <button type="button" class="main-tab-btn" data-tab="analytics">
+            <span class="pokeball-nav-icon" aria-hidden="true"></span>
+            <span>PULL RATES · 확률 검증</span>
+          </button>
+        </div>
+      </nav>
+
+      <!-- ====================================================================
+           TAB 1: PACK & BOX SIMULATOR
+           ==================================================================== -->
+      <main id="tab-simulator" class="tab-panel active">
+        <!-- Official "SPECIAL FEATURES" Header & 4 Frosted Feature Cards -->
+        <section class="sim-mode-bar">
+          <div class="official-sec-heading">
+            <h2 class="en-wide-title">SPECIAL FEATURES</h2>
+            <p class="ko-sec-sub">원하는 개봉 모드를 선택하여 포켓몬 30주년 기념 확장팩을 오픈하세요</p>
+          </div>
+
+          <div class="mode-buttons">
+            <button type="button" class="mode-btn active" data-mode="box">
+              <div class="mode-card-thumb">
+                <img
+                  src="https://www.pokemonstore.co.kr/assets/pokemon-30-th/images/m6a_pillow_4f272152.webp"
+                  alt="1박스 20팩"
+                  onerror="this.src='https://cdn.pullrates.com/me55/23_hires.webp'"
+                />
+              </div>
+              <span class="mode-num">01</span>
+              <strong class="mode-title">1박스 (20팩) 개봉</strong>
+              <small>복각 2장 + SAR 1장 확정 · 1장씩 스와이프 오픈</small>
+              <span class="mode-arrow-box" aria-hidden="true">↓</span>
+            </button>
+
+            <button type="button" class="mode-btn" data-mode="single">
+              <div class="mode-card-thumb">
+                <img
+                  src="https://cdn.pullrates.com/me55/25_hires.webp"
+                  alt="단품 1팩"
+                />
+              </div>
+              <span class="mode-num">02</span>
+              <strong class="mode-title">단품 1팩 뜯기</strong>
+              <small>피카츄 + 에너지 확정 · 1장씩 스와이프 오픈</small>
+              <span class="mode-arrow-box" aria-hidden="true">↓</span>
+            </button>
+
+            <button type="button" class="mode-btn" data-mode="carton">
+              <div class="mode-card-thumb">
+                <img
+                  src="https://cdn.pullrates.com/me55/158_hires.webp"
+                  alt="FUR 뮤ex"
+                />
+              </div>
+              <span class="mode-num">03</span>
+              <strong class="mode-title">1카톤 (6박스=120팩) 고속깡</strong>
+              <small>FUR 뮤ex/뮤츠ex 저격 (~16.7%/박스)</small>
+              <span class="mode-arrow-box" aria-hidden="true">→</span>
+            </button>
+
+            <button type="button" class="mode-btn" data-mode="chase">
+              <div class="mode-card-thumb">
+                <img
+                  src="https://cdn.pullrates.com/me55/R_hires.webp"
+                  alt="RGB 뮤"
+                />
+              </div>
+              <span class="mode-num">04</span>
+              <strong class="mode-title">히든 RGB 뮤 천장 도전</strong>
+              <small>100~120박스당 1장 마스터카톤 가챠</small>
+              <span class="mode-arrow-box" aria-hidden="true">→</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- BOX / SINGLE PACK WORKSPACE -->
+        <div id="workspace-box-single" class="sim-workspace">
+          <!-- Left Column: Current Box Status & 20-Pack Selector -->
+          <aside id="box-sidebar" class="box-sidebar">
+            <div class="sidebar-card">
+              <div class="box-header-row">
+                <span class="section-kicker">BOOSTER BOX · 20 PACKS</span>
+                <button type="button" id="btn-new-box" class="action-btn btn-gold-outline">
+                  🔄 새 박스 교체
+                </button>
+              </div>
+
+              <!-- Box Quota Progress Tracker -->
+              <div class="quota-grid" id="box-quota-grid">
+                <div class="quota-item">
+                  <span class="quota-name">⚡ 피카츄 홀로 (확정)</span>
+                  <strong class="quota-val" id="q-pr">0 / 20</strong>
+                </div>
+                <div class="quota-item">
+                  <span class="quota-name">🔋 기본 에너지 (확정)</span>
+                  <strong class="quota-val" id="q-energy">0 / 20</strong>
+                </div>
+                <div class="quota-item highlight-cc">
+                  <span class="quota-name">👑 30년 복각 (2장 확정)</span>
+                  <strong class="quota-val" id="q-cc">0 / 2</strong>
+                </div>
+                <div class="quota-item highlight-sar">
+                  <span class="quota-name">💎 SAR / SR (1장 확정)</span>
+                  <strong class="quota-val" id="q-sar">0 / 1</strong>
+                </div>
+                <div class="quota-item highlight-fur">
+                  <span class="quota-name">🚀 FUR (6박스당 1장)</span>
+                  <strong class="quota-val" id="q-fur">미출현</strong>
+                </div>
+                <div class="quota-item highlight-rgb">
+                  <span class="quota-name">🌈 RGB 뮤 (110박스당 1장)</span>
+                  <strong class="quota-val" id="q-rgb">미출현</strong>
+                </div>
+              </div>
+
+              <!-- Box Quick Actions (Official Metallic Gold Capsule + Violet Capsule) -->
+              <div class="box-quick-actions">
+                <button type="button" id="btn-open-next-pack" class="action-btn btn-primary">
+                  ✨ 다음 팩 열기 (<span id="remaining-packs-count">20</span>팩 남음)
+                </button>
+                <button type="button" id="btn-open-all-box" class="action-btn btn-accent">
+                  🔥 남은 팩 일괄 개봉 (박스 요약)
+                </button>
+              </div>
+
+              <!-- 20-Pack Visual Grid -->
+              <div class="pack-tray-label">
+                <span>SELECT PACK IN BOX (20 PACKS)</span>
+              </div>
+              <div id="box-pack-grid" class="box-pack-grid"></div>
+            </div>
+          </aside>
+
+          <!-- Right Column: Official 30th Celebration Showcase Stage -->
+          <section class="pack-stage-panel" id="pack-stage-panel">
+            <!-- Blurred Card Artwork Aura Backdrop -->
+            <div id="stage-card-aura" class="stage-card-aura" aria-hidden="true"></div>
+
+            <div class="stage-top-bar">
+              <div class="stage-status">
+                <span class="pack-badge" id="active-pack-badge">PACK #01 / 20</span>
+                <span class="pack-hint" id="active-pack-hint">팩을 좌우로 스와이프하거나 클릭해 개봉하세요!</span>
+              </div>
+              <div class="stage-controls">
+                <button type="button" id="btn-skip-to-summary" class="action-btn btn-sm" style="display: none;">
+                  ⚡ 6장 한눈에 보기 (Skip)
+                </button>
+                <button type="button" id="btn-quick-next" class="action-btn btn-primary btn-sm" style="display: none;">
+                  ⏩ 다음 팩 뜯기 (Enter)
+                </button>
+              </div>
+            </div>
+
+            <!-- PHASE 1: Unopened Booster Pack Stage -->
+            <div id="stage-unopened" class="stage-unopened">
+              <div class="official-dashed-stage-frame">
+                <div id="booster-pack-3d" class="pack-wrapper" role="button" tabindex="0" aria-label="포켓몬 30주년 확장팩 스와이프하여 개봉">
+                  <div class="pack-top-strip" id="pack-top-strip">
+                    <div class="pack-crimp-top"></div>
+                    <div class="pack-tear-line">
+                      <span>✂️ SWIPE OR CLICK TO OPEN</span>
+                    </div>
+                  </div>
+                  <div class="pack-body">
+                    <img
+                      src="https://www.pokemonstore.co.kr/assets/pokemon-30-th/images/m6a_pillow_4f272152.webp"
+                      alt="30th CELEBRATION 확장팩"
+                      class="pack-art-img"
+                      draggable="false"
+                      onerror="this.style.display='none'"
+                    />
+                    <div class="pack-fallback-art">
+                      <img src="https://cdn.pullrates.com/ui/30th_logo.webp" alt="30th Celebration" class="pack-fallback-logo" />
+                      <span class="pack-fallback-sub">M6a 확장팩 · 1팩 6장 올포일</span>
+                    </div>
+                    <div class="pack-guarantee-tags">
+                      <span>⚡ 피카츄 홀로 1장 확정</span>
+                      <span>🎨 YOSHIROTTEN 에너지 1장 확정</span>
+                    </div>
+                  </div>
+                  <div class="pack-crimp-bottom"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PHASE 2: PullRates-Style One-by-One Card Reveal Stack (1/6 -> 6/6) -->
+            <div id="stage-card-stack" class="stage-card-stack" style="display: none;">
+              <div class="stack-progress-header">
+                <div class="stack-step-badge" id="stack-step-badge">CARD 1 / 6 · ⚡ 피카츄 홀로 확정 슬롯</div>
+                <div class="pokeball-slider-track">
+                  <div class="stack-dots" id="stack-dots"></div>
+                </div>
+              </div>
+
+              <div class="stack-center-area">
+                <!-- Official 30th Celebration Dashed White Frame around Featured Card -->
+                <div class="official-dashed-card-frame">
+                  <div id="stack-active-slot" class="stack-active-slot" title="클릭하거나 좌우로 스와이프하여 다음 카드 보기">
+                    <!-- Active high-res 3D card injected here -->
+                  </div>
+                </div>
+
+                <div class="stack-active-meta" id="stack-active-meta"></div>
+
+                <div class="stack-action-row">
+                  <button type="button" id="btn-inspect-current" class="action-btn btn-sm">
+                    🔍 카드 상세 정보
+                  </button>
+                  <button type="button" id="btn-next-card-in-stack" class="action-btn btn-gold-capsule btn-lg">
+                    다음 카드 넘기기 (2 / 6) ▶
+                  </button>
+                </div>
+                <p class="stack-swipe-tip">카드를 클릭/좌우 스와이프하거나 <code>Space</code> 키를 누르면 다음 카드가 등장합니다</p>
+              </div>
+
+              <!-- Mini Tray of Revealed Cards in Current Pack -->
+              <div class="pack-revealed-tray">
+                <span class="tray-label">REVEALED IN THIS PACK (<span id="tray-revealed-count">1</span> / 6)</span>
+                <div id="pack-revealed-thumbs" class="pack-revealed-thumbs"></div>
+              </div>
+            </div>
+
+            <!-- PHASE 3: All 6 Cards Pack Summary Grid -->
+            <div id="stage-cards" class="stage-cards" style="display: none;">
+              <div class="summary-banner-row">
+                <h3>PACK SUMMARY · 이번 팩 개봉 결과 (6장 전체 · 클릭 시 3D 상세 보기)</h3>
+                <button type="button" id="btn-replay-stack" class="action-btn btn-sm">
+                  🔄 1장씩 다시 보기
+                </button>
+              </div>
+              <div id="pack-cards-grid" class="pack-cards-grid"></div>
+            </div>
+
+            <!-- Current Box Highlights Strip -->
+            <div class="box-hits-strip">
+              <div class="hits-strip-header">
+                <h3>MAJOR HITS · 주요 획득 카드 (RR / AR / 30년 복각 / SAR / FUR / RGB)</h3>
+                <span id="box-hits-count">0장 획득</span>
+              </div>
+              <div id="box-hits-list" class="box-hits-list">
+                <p class="empty-hint">팩을 개봉하면 주요 히트 카드가 여기에 표시됩니다.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- CARTON / RGB CHASE HIGH-SPEED SIMULATOR WORKSPACE -->
+        <div id="workspace-multi" class="multi-workspace" style="display: none;">
+          <div class="multi-header-card">
+            <div class="multi-info">
+              <span class="section-kicker" id="multi-kicker">HIGH-SPEED MULTI-BOX SIMULATOR</span>
+              <h2 id="multi-title">1카톤 (6박스 = 120팩 = 720장) 고속 개봉</h2>
+              <p id="multi-desc">
+                카톤 단위 봉입 카드인 <strong>FUR (뮤ex #158 / 뮤츠ex #157, 약 6박스당 1장)</strong>과 박스당 확정 봉입되는
+                <strong>SAR (6장+)</strong> 및 <strong>30년 역사 복각 (12장 확정)</strong> 결과를 즉시 확인합니다.
+              </p>
+            </div>
+            <div class="multi-actions" id="multi-action-buttons">
+              <button type="button" id="btn-run-carton" class="action-btn btn-gold-capsule btn-lg">
+                1카톤 (6박스 / ₩600,000) 즉시 개봉!
+              </button>
+              <button type="button" id="btn-run-fur-chase" class="action-btn btn-accent btn-lg" style="display: none;">
+                🚀 FUR (뮤ex/뮤츠ex) 뜰 때까지 뽑기
+              </button>
+              <button type="button" id="btn-run-rgb-chase" class="action-btn btn-rgb btn-lg" style="display: none;">
+                🌈 히든 RGB 뮤 (1/110박스) 뜰 때까지 무한 박스깡!
+              </button>
+            </div>
+          </div>
+
+          <div id="multi-results-container" class="multi-results-container">
+            <p class="empty-hint">위 버튼을 눌러 카톤 개봉 또는 RGB 뮤 천장 시뮬레이션을 실행해 보세요!</p>
+          </div>
+        </div>
+      </main>
+
+      <!-- ====================================================================
+           TAB 2: 30th CELEBRATION GALLERY & BINDER (199 CARDS)
+           ==================================================================== -->
+      <main id="tab-gallery" class="tab-panel">
+        <div class="official-sec-heading">
+          <h2 class="en-wide-title">CARD LIST</h2>
+          <p class="ko-sec-sub">포켓몬 30주년 기념 확장팩 (M6a / ME55) 전 199종 공식 카드 갤러리</p>
+        </div>
+
+        <section class="gallery-controls-card">
+          <div class="gallery-cat-pills" id="gallery-category-bar"></div>
+          <p class="gallery-cat-desc" id="gallery-category-desc"></p>
+
+          <div class="gallery-filters-row">
+            <input
+              type="search"
+              id="gallery-search"
+              class="search-input"
+              placeholder="카드 이름(한글/영문), 번호(#158, #R, CC-2), 일러스트레이터(YOSHIROTTEN 등) 검색..."
+            />
+            <select id="gallery-rarity-filter" class="filter-select">
+              <option value="ALL">모든 레어도 (All Rarities)</option>
+              <option value="RGB">🌈 RGB 히든 시크릿 뮤 (3종)</option>
+              <option value="FUR">🚀 FUR 퓨처리스틱 레어 (2종)</option>
+              <option value="SAR">💎 SAR 스페셜 아트 레어 (10종)</option>
+              <option value="CC">👑 30년 역사 복각 Classic (30종)</option>
+              <option value="AR">🎨 AR 아트 레어 (18종)</option>
+              <option value="RR">⚔️ RR 포켓몬 ex (12종)</option>
+              <option value="PR">⚡ PR 피카츄 홀로 (30종)</option>
+              <option value="ENERGY">🔋 YOSHIROTTEN 기본 에너지 (8종)</option>
+              <option value="R">🔷 R 레어 홀로 (16종)</option>
+              <option value="C">⚪ C 커먼 홀로 (70종)</option>
+            </select>
+            <select id="gallery-owned-filter" class="filter-select">
+              <option value="ALL">전체 표시 (보유 + 미보유)</option>
+              <option value="OWNED">보유한 카드만 보기</option>
+              <option value="MISSING">미보유 카드만 보기</option>
+            </select>
+            <label class="preview-toggle-label">
+              <input type="checkbox" id="chk-reveal-unowned" checked />
+              <span>미보유 카드도 컬러 아트워크 보기</span>
+            </label>
+          </div>
+        </section>
+
+        <section id="gallery-grid" class="gallery-grid"></section>
+      </main>
+
+      <!-- ====================================================================
+           TAB 3: PULL RATES TABLE & MONTE CARLO VERIFICATION LAB
+           ==================================================================== -->
+      <main id="tab-analytics" class="tab-panel">
+        <div class="official-sec-heading">
+          <h2 class="en-wide-title">PULL RATES &amp; ANALYTICS</h2>
+          <p class="ko-sec-sub">1박스(20팩) 확정 봉입 기준 및 1,000박스 몬테카를로 시뮬레이션 검증</p>
+        </div>
+
+        <div class="analytics-layout">
+          <section class="analytics-card">
+            <div class="card-head-flex">
+              <div>
+                <span class="section-kicker">CONFIRMED BOX QUOTA &amp; PULL RATES</span>
+                <h2>1박스(20팩) 기준 봉입 확률표 vs 내 실제 획득 통계</h2>
+              </div>
+              <button type="button" id="btn-reset-stats" class="action-btn btn-danger-outline btn-sm">
+                🗑️ 도감 및 통계 초기화
+              </button>
+            </div>
+            <p class="section-sub">
+              나무위키·포켓몬 스토어·PullRates 기준 1박스(20팩 = 120장) 확정 쿼터 및 카톤/마스터카톤 확률과 현재 세션의 실제 개봉 기록을 실시간 비교합니다.
+            </p>
+
+            <div class="table-scroll">
+              <table class="rates-table">
+                <thead>
+                  <tr>
+                    <th>구분 (레어도)</th>
+                    <th>수록 종수</th>
+                    <th>봉입 기준</th>
+                    <th>이론 확률 (박스 / 팩)</th>
+                    <th>내 획득 수량</th>
+                    <th>내 실제 출현율</th>
+                  </tr>
+                </thead>
+                <tbody id="rates-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="analytics-card">
+            <div class="card-head-flex">
+              <div>
+                <span class="section-kicker">MONTE CARLO ENGINE VERIFIER</span>
+                <h2>1,000박스 (20,000팩 = 120,000장) 확률 엔진 정밀 검증</h2>
+              </div>
+              <button type="button" id="btn-run-montecarlo" class="action-btn btn-gold-capsule">
+                🎲 1,000박스 시뮬레이션 검증 실행
+              </button>
+            </div>
+            <p class="section-sub">
+              가챠 엔진(<code>gachaEngine.js</code>)이 실제로 박스당 피카츄 20장, 에너지 20장, 30년 복각 2장, SAR 1장을 100% 보장하고 FUR(~16.7%/박스), RGB(~0.9%/박스)에 수렴하는지 즉시 검증합니다.
+            </p>
+            <div id="montecarlo-output" class="montecarlo-output"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- ======================================================================
+         360° 3D HOLO CARD INSPECTION MODAL
+         ====================================================================== -->
+    <div id="card-modal" class="card-modal-backdrop" style="display: none;" role="dialog" aria-modal="true">
+      <div class="card-modal-content">
+        <button type="button" id="btn-close-modal" class="modal-close-btn" aria-label="닫기">✕</button>
+        <div class="modal-body-grid">
+          <div class="modal-card-stage">
+            <div id="modal-3d-mount" class="modal-3d-mount"></div>
+            <p class="modal-tilt-hint">카드 위에서 마우스를 움직이거나 터치하여 3D 홀로그램 광택을 감상하세요</p>
+          </div>
+          <div class="modal-card-details" id="modal-card-details"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JACKPOT CELEBRATION OVERLAY (FOR SAR / CC / FUR / RGB) -->
+    <div id="jackpot-toast" class="jackpot-toast" style="display: none;"></div>
+
+    <script type="module" src="src/main.js?v=37"></script>
+  </body>
+</html>
